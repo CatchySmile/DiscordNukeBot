@@ -3,7 +3,8 @@ Hey 👋, this is just a **personal project** I use myself, go ahead and use it 
 I only made this because **alternatives would Rate limit my account**, and im not willing to **pay** for one that doesnt.
 
 # Preview
-![](https://i.ibb.co/bbgbT9F/image.png)
+
+![image](https://github.com/user-attachments/assets/aee5aaf5-4199-4596-add0-749a7f2fa642)
 
 # How to use
 Create a bot & find it's token [here](https://discord.com/developers/) (Dont name it something stupid like MEE6 or WICK or DYNO, it will be disabled.)
@@ -30,7 +31,7 @@ pip install os_sys
 ```
 
 # Features
-
+-  Full Nuke: **Completely Nuke** the **entire server** with a mix of every **devastating option**.
 -  Send Messages: **Send messages** to a specific **channel** within the server.
 -  Create Channel(s): **Create one** or more **text channels** within the server.
 -  Kick User by ID: **Kick a user** from the server by specifying their user ID.
