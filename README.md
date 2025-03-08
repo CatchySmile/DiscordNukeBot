@@ -12,7 +12,7 @@ Create a bot & find it's token [here](https://discord.com/developers/) (Dont nam
 - Enable these three intents :
 ![](https://i.ibb.co/QKqyndn/image.png)
 
-- Run `Bot.py`
+- Run `Bot.py` with python 3.9
 - Input your bot's **token**. 
 - Type in a **guild id** then your ready to go.
 
