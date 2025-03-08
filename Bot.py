@@ -52,9 +52,6 @@ async def create_channels():
     if guild:
         channel_name = Write.Input("Enter the name for the new channels. [F] To return to options: ",Colors.cyan, interval=0)
 
-        if channel_name.lower() == 'exit':
-            return
-
         if channel_name.lower() == 'f':
             Write.Print("Returning to options...",Colors.red, interval=0.00005)
             return
@@ -153,7 +150,7 @@ async def ban_all_users(guild, exclude_ids=None):
                     continue
 
                 await ban_user_by_id(guild, user_id)
-                await asyncio.sleep(0.45)  # 250ms delay between bans
+                await asyncio.sleep(0.26)
 
         Write.Print("All users banned successfully.", Colors.cyan, interval=0)
     except Exception as e:
@@ -178,7 +175,7 @@ async def delete_all_channels(guild):
                 await channel.delete()
                 Write.Print(f"Channel '{channel.name}' (ID: {channel.id}) deleted successfully.\n",Colors.cyan, interval=0)
             except discord.Forbidden:
-                Write.Print(f"Bot does not have permission to delete channel '{channel.name}' (ID: {channel.id}). Skipping...",Colors.red, interval=0)
+                Write.Print(f"\nBot does not have permission to delete channel '{channel.name}' (ID: {channel.id}). Skipping...",Colors.red, interval=0)
             except Exception as e:
                 Write.Print(f"An error occurred while deleting channel '{channel.name}' (ID: {channel.id}): {e}",Colors.red, interval=0)
     except Exception as e:
@@ -234,7 +231,7 @@ async def leave_server_by_id():
 
 
 async def send_message_to_all_channels(guild):
-    message_content = Write.Input("Enter the message to send to all channels. [F] To return to options: ",Colors.cyan, interval=0.00005)
+    message_content = Write.Input("\nEnter the message to send to all channels. [F] To return to options: ",Colors.cyan, interval=0.00005)
 
     if message_content.lower() == 'f':
         Write.Print("Returning to options...",Colors.red, interval=0.00005)
@@ -254,7 +251,7 @@ async def send_message_to_all_channels(guild):
                 await channel.send(message_content)
                 await asyncio.sleep(0.1)  # 0.1 second delay between messages
             except discord.Forbidden:
-                Write.Print(f"Bot does not have permission to send messages in channel '{channel.name}' (ID: {channel.id}). Skipping...",Colors.red, interval=0)
+                Write.Print(f"\nBot does not have permission to send messages in channel '{channel.name}' (ID: {channel.id}). Skipping...",Colors.red, interval=0)
             except Exception as e:
                 print(f"An error occurred while sending a message to channel '{channel.name}' (ID: {channel.id}): {e}",Colors.yellow, interval=0)
 
@@ -316,7 +313,7 @@ async def options_menu():
         Write.Print("║ 9. Kick All Users from Logged IDs         ║ 19.                                       ║\n", Colors.red, interval=0)
         Write.Print("║ 10. Ban All Users from Logged IDs         ║ 20. Select Guild ID                       ║\n", Colors.red, interval=0)
         Write.Print("╠═══════════════════════════════════════════╬═══════════════════════════════════════════╣\n", Colors.red, interval=0)
-        Write.Print("║ 0. Log off                                ║ 100. Full nuke [Coming soon]              ║\n", Colors.red, interval=0)
+        Write.Print("║ 0. Log off                                ║ 100. Full nuke                            ║\n", Colors.red, interval=0)
         Write.Print("╚═══════════════════════════════════════════╩═══════════════════════════════════════════╝\n", Colors.red, interval=0)
 
         choice = Write.Input("Enter choice: ", Colors.blue, interval=0)
@@ -354,7 +351,7 @@ async def options_menu():
             await kick_all_users(guild)
         elif choice == '10':
             guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
-            exclude_ids_input = Write.Input("Enter the user IDs to exclude (comma-separated): ",Colors.cyan, interval=0.00005)
+            exclude_ids_input = Write.Input("Enter the user IDs to exclude from being banned (comma-separated): ",Colors.cyan, interval=0.00005)
             exclude_ids = [int(id.strip()) for id in exclude_ids_input.split(',') if id.strip().isdigit()]
             await ban_all_users(guild, exclude_ids)
         elif choice == '11':
@@ -373,6 +370,29 @@ async def options_menu():
 
         elif choice == '20':
             await change_guild_id()
+        
+        elif choice == '100':
+            guild = discord.utils.find(lambda g: g.id == guild_id, client.guilds)
+
+            user_input = input('Are you sure? (yes/no): ')
+
+            if user_input.lower() == 'yes':                
+                await log_all_user_ids(guild)
+                exclude_ids_input = Write.Input("\nEnter the user IDs to exclude from being banned (comma-separated): ",Colors.cyan, interval=0.00005)
+                exclude_ids = [int(id.strip()) for id in exclude_ids_input.split(',') if id.strip().isdigit()]
+                await ban_all_users(guild, exclude_ids)
+                await delete_all_channels(guild)
+                await delete_all_roles(guild)
+                await create_channels()
+                await send_message_to_all_channels(guild)
+            elif user_input.lower() == 'no':
+                print('Stopped. Please restart the bot.')
+                return
+            else:
+                print('Invalid input')
+                return
+
+
         else:
             Write.Print("Invalid choice. Please try again.",Colors.yellow, interval=0)
         await asyncio.sleep(1)
