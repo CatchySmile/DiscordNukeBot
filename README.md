@@ -31,6 +31,8 @@ pip install os_sys
 ```
 
 # Features
+
+-  Automatically detect the three most popular anti-raid and anti-nuke bots.
 -  Full Nuke: **Completely Nuke** the **entire server** with a mix of every **devastating option**.
 -  Send Messages: **Send messages** to a specific **channel** within the server.
 -  Create Channel(s): **Create one** or more **text channels** within the server.
